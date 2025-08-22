@@ -1,0 +1,12 @@
+- category_cols:
+    - amenity
+    - cuisine
+  description: Points of interest (POIs) such as cafes from OpenStreetMap.
+  geom_col: geometry
+  id: poi_entities
+  id_col: id
+  name: 'POI Entities (Source: OpenStreetMap)'
+  table: <PROJECT>.<DATASET>.poi_entities
+  text_cols:
+    - name
+    - brand

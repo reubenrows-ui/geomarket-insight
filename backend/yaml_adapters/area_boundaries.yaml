@@ -1,0 +1,13 @@
+- category_cols: []
+  description: Boundary polygons for spatial joins with sub-area names.
+  geom_col: geometry
+  id: area_boundaries
+  id_col: area_id
+  join_keys:
+    - area_id: zip
+  name: US Neighbourhood Boundaries
+  table: <PROJECT>.<DATASET>.area_boundaries
+  text_cols:
+    - city
+    - county
+    - sub_area_names

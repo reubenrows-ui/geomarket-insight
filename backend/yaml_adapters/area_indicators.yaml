@@ -1,0 +1,13 @@
+- category_cols: []
+  description: Store metadata for your own company locations.
+  extra_cols:
+    - revenue_last_year
+    - open_date
+  geom_col: geometry
+  id: org_locations
+  id_col: id
+  name: Company store locations
+  table: <PROJECT>.<DATASET>.org_locations
+  text_cols:
+    - name
+    - address
