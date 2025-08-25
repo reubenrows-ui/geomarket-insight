@@ -4,6 +4,8 @@ from backend.config import get_config
 # --- Paste your full SQL (no ellipses) into these strings ---
 def poi_entities_sql(dataset_id: str) -> str:
     return f"""
+    -- CREATE OR REPLACE poi_entities (cafes in California, excluding Blue Bottle Coffee)
+    CREATE OR REPLACE TABLE `{dataset_id}.poi_entities` AS 
     SELECT
     id,
     geometry,
@@ -52,11 +54,24 @@ def poi_entities_sql(dataset_id: str) -> str:
         "internet_cafe")
     AND names.primary <> 'Blue Bottle Coffee'
     """
-
+def poi_entities_search_view_sql(dataset_id: str) -> str:
+    return f"""
+    -- CREATE OR REPLACE TABLE poi_entities_search for search indexing (same as poi_entities)
+    CREATE OR REPLACE TABLE `{dataset_id}.poi_entities_search` AS 
+    SELECT
+    id,
+    name,
+    primary_category,
+    alternate_category,
+    freeform as street_address,
+    locality,
+    postcode
+    FROM
+    `{dataset_id}.poi_entities`;
+    """
 def area_indicators_sql(dataset_id: str) -> str:
     return f"""
     -- CREATE OR REPLACE area_indicators by joining ACS to ZIP geometries (California)
-    -- TODO: Paste the full SQL from your infra_setup.py here (without ...).
     CREATE OR REPLACE TABLE `{dataset_id}.area_indicators` AS
     SELECT
       b.zip_code AS area_id,
@@ -76,7 +91,6 @@ def area_indicators_sql(dataset_id: str) -> str:
 def area_boundaries_sql(dataset_id: str) -> str:
     return f"""
     -- CREATE OR REPLACE area_boundaries (ZIP envelopes + subarea aggregation)
-    -- TODO: Paste the full SQL from your infra_setup.py here (without ...).
     CREATE OR REPLACE TABLE `{dataset_id}.area_boundaries` AS
     SELECT
       a.zip_code AS area_id,
@@ -134,6 +148,21 @@ def org_locations_sql(dataset_id: str) -> str:
     AND names.primary = 'Blue Bottle Coffee'
     """
 
+def org_locations_search_view_sql(dataset_id: str) -> str:
+    return f"""
+        -- CREATE OR REPLACE TABLE org_locations_search for search indexing (subset of org_locations)
+        CREATE OR REPLACE TABLE `{dataset_id}.org_locations_search` AS 
+        SELECT
+            id,
+            name,
+            revenue_last_year, open_date,
+            freeform as street_address,
+            locality,
+            postcode
+        FROM `{dataset_id}.org_locations`
+    ;
+    """
+
 def ensure_dataset(client: bigquery.Client, dataset_id: str, location: str):
     ds = bigquery.Dataset(dataset_id)
     ds.location = location
@@ -155,9 +184,11 @@ def main():
 
     # Create/refresh the three core tables
     run_query(client, poi_entities_sql(dataset_id), "poi_entities created")
+    run_query(client, poi_entities_search_view_sql(dataset_id), "poi_entities search view created")
     run_query(client, area_indicators_sql(dataset_id), "area_indicators created")
     run_query(client, area_boundaries_sql(dataset_id), "area_boundaries created")
     run_query(client, org_locations_sql(dataset_id), "org_locations created")
+    run_query(client, org_locations_search_view_sql(dataset_id), "org_locations search view created")
 
 
 
