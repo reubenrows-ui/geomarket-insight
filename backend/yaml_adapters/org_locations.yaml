@@ -1,13 +1,18 @@
-- category_cols: []
-  description: Store metadata for your own company locations.
-  extra_cols:
-    - revenue_last_year
-    - open_date
-  geom_col: geometry
-  id: org_locations
-  id_col: id
-  name: Company store locations
-  table: <PROJECT>.<DATASET>.org_locations
-  text_cols:
-    - name
-    - address
+id: org_locations
+name: Organization Locations (First-Party)
+description: Branded store locations derived from Overture Maps with deterministic synthetic KPIs.
+table: <PROJECT>.<DATASET>.org_locations
+geom_col: geometry
+id_col: id
+text_cols:
+  - name
+  - freeform
+  - locality
+  - region
+  - country
+numeric_cols:
+  - revenue_last_year
+date_cols:
+  - open_date
+join_keys:
+  - postcode: area_id

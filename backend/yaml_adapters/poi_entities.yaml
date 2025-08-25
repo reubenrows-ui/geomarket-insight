@@ -1,12 +1,17 @@
-- category_cols:
-    - amenity
-    - cuisine
-  description: Points of interest (POIs) such as cafes from OpenStreetMap.
-  geom_col: geometry
-  id: poi_entities
-  id_col: id
-  name: 'POI Entities (Source: OpenStreetMap)'
-  table: <PROJECT>.<DATASET>.poi_entities
-  text_cols:
-    - name
-    - brand
+id: poi_entities
+name: Points of Interest (Cafés)
+description: Overture Maps café-like places filtered by region and category.
+table: <PROJECT>.<DATASET>.poi_entities
+geom_col: geometry
+id_col: id
+category_cols:
+  - primary_category
+  - alternate_category   # JSON string of alternates
+text_cols:
+  - name
+  - freeform
+  - locality
+  - region
+  - country
+join_keys:
+  - postcode: area_id    # adjust to your boundary schema if needed
