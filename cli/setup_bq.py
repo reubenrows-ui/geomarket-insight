@@ -60,12 +60,12 @@ def poi_entities_search_view_sql(dataset_id: str) -> str:
     CREATE OR REPLACE TABLE `{dataset_id}.poi_entities_search` AS 
     SELECT
     id,
-    name,
+    struct(name,
     primary_category,
     alternate_category,
     freeform as street_address,
     locality,
-    postcode
+    postcode) as structData
     FROM
     `{dataset_id}.poi_entities`;
     """
@@ -154,11 +154,11 @@ def org_locations_search_view_sql(dataset_id: str) -> str:
         CREATE OR REPLACE TABLE `{dataset_id}.org_locations_search` AS 
         SELECT
             id,
-            name,
+            struct(name,
             revenue_last_year, open_date,
             freeform as street_address,
             locality,
-            postcode
+            postcode) as structData
         FROM `{dataset_id}.org_locations`
     ;
     """

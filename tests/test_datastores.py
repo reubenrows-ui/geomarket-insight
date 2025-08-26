@@ -1,6 +1,6 @@
 # tests/test_datastores.py
 import types
-from tools.create_datastore import create_or_replace_datastore
+from tools.datastores import create_or_replace_datastore
 
 class FakeOp:
     def result(self, timeout=None): return types.SimpleNamespace(name="projects/p/locations/l/collections/c/dataStores/ds")
