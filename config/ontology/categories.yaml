@@ -1,0 +1,13 @@
+# logical category → table/column mapping + starter synonyms
+coffee_shop:
+  table: poi_entities
+  match_cols: [amenity, brand, cuisine]
+  synonyms: ["cafe", "coffee", "coffeeshop", "espresso bar"]
+income:
+  table: area_indicators
+  match_cols: [indicator_income_median, indicator_income_mean]
+  synonyms: ["median income", "household income", "income level"]
+population:
+  table: area_indicators
+  match_cols: [indicator_total_pop]
+  synonyms: ["pop", "population", "residents"]
