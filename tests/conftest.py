@@ -20,7 +20,7 @@ def reset_config_cache(monkeypatch):
         monkeypatch.delenv(key, raising=False)
 
     # Clear get_config() cache before each test
-    import backend.config as config
+    import shared.config.settings as config
     config.get_config.cache_clear()  # type: ignore[attr-defined]
     yield
     config.get_config.cache_clear()  # type: ignore[attr-defined]
